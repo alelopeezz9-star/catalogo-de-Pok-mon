@@ -1,0 +1,17 @@
+/* Sobrescribir colores base para que todo sea rojo */
+body {
+    background-color: #f8d7da; /* Un fondo rojo muy tenue */
+}
+
+.btn-primary, .btn-secondary {
+    background-color: #dc3545 !important; /* Rojo Bootstrap (danger) */
+    border-color: #dc3545 !important;
+}
+
+.text-primary, .text-muted {
+    color: #dc3545 !important;
+}
+
+.card {
+    border-color: #f5c2c7;
+}

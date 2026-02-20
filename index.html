@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+    <html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PokéApp - Catálogo</title>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link rel="stylesheet" href="css.css">
+    </head>
+
+ 
+</head>
+<body class="bg-light">
+
+<div id="contenedor" v-cloak>
+    <nav class="navbar navbar-dark bg-danger shadow mb-4">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1 fw-bold">
+                <h1 class="bi bi-journal-medical"><img src="../11_Api-pockemon/pokemon.png" alt="">Pokémon</h1>
+            </span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card mb-4 border-0 shadow-sm p-4">
+            <div class="row align-items-center">
+                <div class="col-md-5 mb-3 mb-md-0">
+                    <label class="form-label fw-bold text-danger">Nombre del Personaje:</label>
+                    <input type="text" v-model="busqueda" class="form-control border-danger-subtle" placeholder="Buscar...">
+                </div>
+                <div class="col-md-7">
+                    <label class="form-label fw-bold text-danger">Tipo Elemental:</label>
+                    <div class="btn-group shadow-sm w-100">
+                        <button class="btn btn-outline-danger" :class="{active: seleccionarCategoria == 'Todos'}" @click="filtrarPorCategoria('Todos')">Todos</button>
+                        <button class="btn btn-outline-danger" :class="{active: seleccionarCategoria == 'grass'}" @click="filtrarPorCategoria('grass')">Planta</button>
+                        <button class="btn btn-outline-danger" :class="{active: seleccionarCategoria == 'fire'}" @click="filtrarPorCategoria('fire')">Fuego</button>
+                        <button class="btn btn-outline-danger" :class="{active: seleccionarCategoria == 'water'}" @click="filtrarPorCategoria('water')">Agua</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <div class="d-flex justify-content-between mb-1">
+                <span class="small fw-bold text-danger">Registros: {{ personajesFiltrados.length }} / {{ personajes.length }}</span>
+                <span class="small fw-bold text-danger">{{ calcularProgreso }}%</span>
+            </div>
+            <div class="progress progress-custom bg-danger-subtle">
+                <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" 
+                     role="progressbar" 
+                     :style="{ width: calcularProgreso + '%' }">
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4" v-if="personajesFiltrados.length > 0">
+            <div class="col" v-for="p in personajesFiltrados" :key="p.id">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="bg-danger-subtle p-3 text-center">
+                        <img :src="p.image" class="card-img-top" :alt="p.name" style="max-width: 120px;">
+                    </div>
+                    <div class="card-body border-top border-danger border-4">
+                        <h5 class="text-capitalize fw-bold mb-1 text-danger">{{ p.name }}</h5>
+                        <div class="d-grid gap-2 mt-3">
+                            <button class="btn btn-danger btn-sm fw-bold shadow-sm" @click="abrirDetalle(p)">Ver Ficha</button>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div v-else class="alert alert-danger text-center mt-4 border-dashed">
+            No se han encontrado registros para <strong>"{{ busqueda }}"</strong>.
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalPokemon" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" v-if="seleccionado">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title text-capitalize fw-bold">{{ seleccionado.name }}</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center p-4">
+                    <div class="rounded-circle bg-light d-inline-block p-4 mb-3 border border-danger-subtle">
+                        <img :src="seleccionado.image" class="img-fluid" width="180">
+                    </div>
+                    <div class="p-3 rounded bg-light border">
+                        <table class="table table-sm table-borderless mb-0">
+                            <tbody class="text-start">
+                                <tr> <th class="text-danger">Tipo del personaje: </th> <td class="text-capitalize">{{ seleccionado.types.join(' y/o ') }}</td> </tr>
+                                <tr> <th class="text-danger">Altura:</th> <td>{{ seleccionado.altura / 10 }} m</td> </tr>
+                                <tr> <th class="text-danger">Peso:</th> <td>{{ seleccionado.peso / 10 }} kg</td> </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/funciones.js"></script>
+</body>
+</html>
